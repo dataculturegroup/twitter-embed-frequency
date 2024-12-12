@@ -18,7 +18,6 @@ logger.addHandler(handler)
 logger.propagate = False
 logging.getLogger('readability.readability').setLevel(logging.WARNING)
 
-DAILY_SAMPLE_SIZE = 1000
 
 def extract_embedded_tweets(urls: List[str], dest_dir: str):
     logger.info(f"Processing to {dest_dir}: {len(urls)}")
@@ -73,7 +72,10 @@ def extract_embedded_tweets(urls: List[str], dest_dir: str):
             mentioned_story_count += 1
     logger.info(f"  Processing complete: {processed_count} new, {cached_count} cached, {missing_count} fetch failed")
     logger.info(f"  embedded={embedded_tweet_count}, mentioned_tweet_count={mentioned_tweet_count}")
-    return dict(embeds=embedded_tweet_count, mentions=mentioned_tweet_count, embed_docs=embedded_story_count, mention_docs=mentioned_story_count,
+    return dict(embeds=embedded_tweet_count, mentions=mentioned_tweet_count,
+                embed_docs=embedded_story_count, mention_docs=mentioned_story_count,
+                pct_with_embeds=embedded_story_count/(processed_count+cached_count), 
+                pct_with_mentions=mentioned_story_count/(processed_count+cached_count), 
                 processed=processed_count, cached=cached_count, missing=missing_count)
 
 
@@ -88,7 +90,7 @@ date_to_sample_df = {}
 all_urls = []
 for file_path in selected_date_file_paths:
     the_date = file_path.split('/')[-1][11:21]
-    df = pd.read_csv(file_path).head(DAILY_SAMPLE_SIZE)
+    df = pd.read_csv(file_path)
     date_to_sample_df[the_date] = df
     day_urls = df['url'].tolist()
     all_urls += day_urls
@@ -108,4 +110,3 @@ for file_path in selected_date_file_paths:
 
 df = pd.DataFrame(results)
 df.to_csv('tweet-stats.csv', index=False)
-
