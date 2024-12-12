@@ -89,7 +89,7 @@ logger.info(f"Found {len(selected_date_file_paths)} dates to study in {MC_STORY_
 date_to_sample_df = {}
 all_urls = []
 for file_path in selected_date_file_paths:
-    the_date = file_path.split('/')[-1][11:21]
+    the_date = file_path.split('/')[-1][0:10]
     df = pd.read_csv(file_path)
     date_to_sample_df[the_date] = df
     day_urls = df['url'].tolist()
@@ -100,7 +100,7 @@ download_to_dir(all_urls, f'data/html-cache/')
 # process for embedded tweets (caching locally)
 results = []
 for file_path in selected_date_file_paths:
-    the_date = file_path.split('/')[-1][11:21]
+    the_date = file_path.split('/')[-1][0:10]
     df = date_to_sample_df[the_date]
     urls = df['url'].tolist()
     counts = extract_embedded_tweets(urls, f'data/tweet-info/{the_date}')
