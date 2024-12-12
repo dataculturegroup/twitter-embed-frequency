@@ -1,5 +1,6 @@
 data/html-cache/*.html
 data/tweet-info/*.json
+data/tweet-info/csv/*.json
 __pycache__
 .idea
 .DS_STORE

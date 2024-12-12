@@ -82,8 +82,8 @@ def extract_embedded_tweets(urls: List[str], dest_dir: str):
 MC_STORY_LIST_DIR = 'data/sample-story-urls'
 
 # load list of files contianing URLs for each selected day
-selected_date_file_paths = sorted([f"{MC_STORY_LIST_DIR}/{f}" for f in os.listdir('data/story-urls') if f.endswith('.csv')])
-logger.info(f"Found {len(selected_date_file_paths)} dates to study")
+selected_date_file_paths = sorted([f"{MC_STORY_LIST_DIR}/{fn}" for fn in os.listdir(MC_STORY_LIST_DIR) if fn.endswith('.csv')])
+logger.info(f"Found {len(selected_date_file_paths)} dates to study in {MC_STORY_LIST_DIR}")
 
 # download all the HTML that you can (caching locally)
 date_to_sample_df = {}
@@ -96,7 +96,6 @@ for file_path in selected_date_file_paths:
     all_urls += day_urls
 logger.info(f"Picked {len(all_urls)} URLs to download")
 download_to_dir(all_urls, f'data/html-cache/')
-#sys.exit()
 
 # process for embedded tweets (caching locally)
 results = []
