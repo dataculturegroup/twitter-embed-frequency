@@ -1,0 +1,4 @@
+scrapy
+pandas
+tweetfinder
+lxml_html_clean
